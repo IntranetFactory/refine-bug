@@ -26,6 +26,7 @@ import {
   BlogPostEdit,
   BlogPostList,
   BlogPostShow,
+  BlogPostPublishedList
 } from "./pages/blog-posts";
 import {
   CategoryCreate,
@@ -50,10 +51,20 @@ function App() {
                   {
                     name: "blog_posts",
                     list: "/blog-posts",
+                    identifier: "blog-posts",
                     create: "/blog-posts/create",
                     edit: "/blog-posts/edit/:id",
                     show: "/blog-posts/show/:id",
                     meta: {
+                      canDelete: true,
+                    },
+                  },
+                  {
+                    name: "blog_posts",
+                    identifier: "blog-published",
+                    list: "/blog-published",                    
+                    meta: {
+                      label: "Published",
                       canDelete: true,
                     },
                   },
@@ -96,6 +107,9 @@ function App() {
                       <Route path="create" element={<BlogPostCreate />} />
                       <Route path="edit/:id" element={<BlogPostEdit />} />
                       <Route path="show/:id" element={<BlogPostShow />} />
+                    </Route>
+                    <Route path="/blog-published">
+                      <Route index element={<BlogPostPublishedList />} />
                     </Route>
                     <Route path="/categories">
                       <Route index element={<CategoryList />} />
