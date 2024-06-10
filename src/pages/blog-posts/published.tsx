@@ -7,18 +7,19 @@ import {
   ShowButton,
   useTable,
   getDefaultSortOrder,
+  FilterDropdown,
 } from "@refinedev/antd";
-import { useMany, type BaseRecord } from "@refinedev/core";
-import { Space, Table } from "antd";
+import { useMany, type BaseRecord, getDefaultFilter, } from "@refinedev/core";
+import { Space, Table, Input } from "antd";
 
 export const BlogPostPublishedList = () => {
-  const { tableProps, sorters, filters } = useTable({    
+  const { tableProps, sorters, filters } = useTable({
     syncWithLocation: true,
     sorters: {
-        initial: [{ field: "created_at", order: "desc" }],
+      initial: [{ field: "created_at", order: "asc" }],
     },
     filters: {
-       // initial: [{ field: "email", operator: "contains", value: "" }],
+      // initial: [{ field: "email", operator: "contains", value: "" }],
     }
   });
 
@@ -57,7 +58,24 @@ export const BlogPostPublishedList = () => {
             )
           }
         />
-        <Table.Column dataIndex="status" title={"Status"} sorter />
+
+        <Table.Column
+          title={"Status"}
+          dataIndex="status"
+          sorter={true}
+          defaultSortOrder={getDefaultSortOrder("status", sorters)}
+          defaultFilteredValue={getDefaultFilter(
+            "status",
+            filters,
+            "contains",
+          )}
+          filterDropdown={(props) => (
+            <FilterDropdown {...props}>
+              <Input placeholder={"placeholder?"} />
+            </FilterDropdown>
+          )}
+        />
+
         <Table.Column
           sorter
           defaultSortOrder={getDefaultSortOrder("created_at", sorters)}
