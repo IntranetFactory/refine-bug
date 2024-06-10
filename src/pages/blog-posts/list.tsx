@@ -12,6 +12,8 @@ import {
 import { useMany, type BaseRecord, getDefaultFilter } from "@refinedev/core";
 import { Space, Table, Input } from "antd";
 
+
+
 export const BlogPostList = () => {
   const { tableProps, sorters, filters } = useTable({
     syncWithLocation: true,

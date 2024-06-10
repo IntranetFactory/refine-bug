@@ -11,15 +11,27 @@ import {
 } from "@refinedev/antd";
 import { useMany, type BaseRecord, getDefaultFilter, } from "@refinedev/core";
 import { Space, Table, Input } from "antd";
+import { useParams, useLocation } from 'react-router-dom';
 
-export const BlogPostPublishedList = () => {
+export const BlogPostFilteredList = () => {
+
+  const location = useLocation();
+
+  return <BlogPostFilteredListIntern key={location.pathname} />;
+};
+
+const BlogPostFilteredListIntern = () => {
+
+  const location = useLocation();
+  console.log(location);
+
   const { tableProps, sorters, filters } = useTable({
     syncWithLocation: true,
     sorters: {
       initial: [{ field: "created_at", order: "asc" }],
     },
     filters: {
-       initial: [{ field: "status", operator: "eq", value: "published" }],
+      permanent: [{ field: "status", operator: "eq", value: "published" }],
     }
   });
 
@@ -60,20 +72,10 @@ export const BlogPostPublishedList = () => {
         />
 
         <Table.Column
-          title={"Status"}
+          title={"Stat us"}
           dataIndex="status"
           sorter={true}
           defaultSortOrder={getDefaultSortOrder("status", sorters)}
-          defaultFilteredValue={getDefaultFilter(
-            "status",
-            filters,
-            "eq",
-          )}
-          filterDropdown={(props) => (
-            <FilterDropdown {...props}>
-              <Input placeholder={"placeholder?"} />
-            </FilterDropdown>
-          )}
         />
 
         <Table.Column
