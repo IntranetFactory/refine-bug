@@ -22,8 +22,9 @@ export const BlogPostFilteredList = () => {
 
 const BlogPostFilteredListIntern = () => {
 
-  const location = useLocation();
-  console.log(location);
+  const path = useLocation().pathname;
+  var status = path.split("/")[2]
+  console.log(path, status);
 
   const { tableProps, sorters, filters } = useTable({
     syncWithLocation: true,
@@ -31,7 +32,7 @@ const BlogPostFilteredListIntern = () => {
       initial: [{ field: "created_at", order: "asc" }],
     },
     filters: {
-      permanent: [{ field: "status", operator: "eq", value: "published" }],
+      permanent: [{ field: "status", operator: "eq", value: status }],
     }
   });
 

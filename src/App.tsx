@@ -70,10 +70,10 @@ function App() {
                   },
                   {
                     name: "blog_posts",
-                    identifier: "blog-published2",
-                    list: "/blog/published2",                    
+                    identifier: "blog-rejected",
+                    list: "/blog/rejected",                    
                     meta: {
-                      label: "Published",
+                      label: "Rejected",
                       canDelete: true,
                     },
                   },
@@ -118,7 +118,7 @@ function App() {
                       <Route path="show/:id" element={<BlogPostShow />} />
                     </Route>
                     <Route path="/blog/published" element={<BlogPostFilteredList />} />
-                    <Route path="/blog/published2" element={<BlogPostFilteredList />}  />
+                    <Route path="/blog/rejected" element={<BlogPostFilteredList />}  />
                     
                     <Route path="/categories">
                       <Route index element={<CategoryList />} />
