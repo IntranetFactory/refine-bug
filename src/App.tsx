@@ -50,7 +50,7 @@ function App() {
                 resources={[
                   {
                     name: "blog_posts",
-                    list: "/blog-posts",
+                    list: "/blog/posts",
                     identifier: "blog-posts",
                     create: "/blog-posts/create",
                     edit: "/blog-posts/edit/:id",
@@ -62,7 +62,7 @@ function App() {
                   {
                     name: "blog_posts",
                     identifier: "blog-published",
-                    list: "/blog-published",                    
+                    list: "/blog/published",                    
                     meta: {
                       label: "Published",
                       canDelete: true,
@@ -102,13 +102,13 @@ function App() {
                       index
                       element={<NavigateToResource resource="blog_posts" />}
                     />
-                    <Route path="/blog-posts">
+                    <Route path="/blog/posts">
                       <Route index element={<BlogPostList />} />
                       <Route path="create" element={<BlogPostCreate />} />
                       <Route path="edit/:id" element={<BlogPostEdit />} />
                       <Route path="show/:id" element={<BlogPostShow />} />
                     </Route>
-                    <Route path="/blog-published">
+                    <Route path="/blog/published">
                       <Route index element={<BlogPostPublishedList />} />
                     </Route>
                     <Route path="/categories">
