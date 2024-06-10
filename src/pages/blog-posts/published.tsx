@@ -6,13 +6,20 @@ import {
   MarkdownField,
   ShowButton,
   useTable,
+  getDefaultSortOrder,
 } from "@refinedev/antd";
 import { useMany, type BaseRecord } from "@refinedev/core";
 import { Space, Table } from "antd";
 
 export const BlogPostPublishedList = () => {
-  const { tableProps } = useTable({
+  const { tableProps, sorters, filters } = useTable({    
     syncWithLocation: true,
+    sorters: {
+        initial: [{ field: "created_at", order: "desc" }],
+    },
+    filters: {
+       // initial: [{ field: "email", operator: "contains", value: "" }],
+    }
   });
 
   const { data: categoryData, isLoading: categoryIsLoading } = useMany({
@@ -50,8 +57,10 @@ export const BlogPostPublishedList = () => {
             )
           }
         />
-        <Table.Column dataIndex="status" title={"Status"} />
+        <Table.Column dataIndex="status" title={"Status"} sorter />
         <Table.Column
+          sorter
+          defaultSortOrder={getDefaultSortOrder("created_at", sorters)}
           dataIndex={["createdAt"]}
           title={"Created at"}
           render={(value: any) => <DateField value={value} />}

@@ -50,7 +50,7 @@ export const BlogPostList = () => {
             )
           }
         />
-        <Table.Column dataIndex="status" title={"Status"} />
+        <Table.Column dataIndex="status" title={"Status"} sorter />
         <Table.Column
           dataIndex={["createdAt"]}
           title={"Created at"}
