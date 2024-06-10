@@ -67,7 +67,7 @@ export const BlogPostList = () => {
           defaultFilteredValue={getDefaultFilter(
             "status",
             filters,
-            "contains",
+            "eq",
           )}
           filterDropdown={(props) => (
             <FilterDropdown {...props}>

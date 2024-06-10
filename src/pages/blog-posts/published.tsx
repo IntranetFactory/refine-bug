@@ -19,7 +19,7 @@ export const BlogPostPublishedList = () => {
       initial: [{ field: "created_at", order: "asc" }],
     },
     filters: {
-      // initial: [{ field: "email", operator: "contains", value: "" }],
+       initial: [{ field: "status", operator: "eq", value: "published" }],
     }
   });
 
@@ -67,7 +67,7 @@ export const BlogPostPublishedList = () => {
           defaultFilteredValue={getDefaultFilter(
             "status",
             filters,
-            "contains",
+            "eq",
           )}
           filterDropdown={(props) => (
             <FilterDropdown {...props}>
