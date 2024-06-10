@@ -28,6 +28,9 @@ const BlogPostFilteredListIntern = () => {
 
   const { tableProps, sorters, filters } = useTable({
     syncWithLocation: true,
+    meta: {
+      select: "*, categories(id,title)",
+    },
     sorters: {
       initial: [{ field: "created_at", order: "asc" }],
     },
@@ -40,7 +43,7 @@ const BlogPostFilteredListIntern = () => {
     resource: "categories",
     ids:
       tableProps?.dataSource
-        ?.map((item) => item?.category?.id)
+        ?.map((item) => item?.categories?.id)
         .filter(Boolean) ?? [],
     queryOptions: {
       enabled: !!tableProps?.dataSource,
@@ -61,7 +64,7 @@ const BlogPostFilteredListIntern = () => {
           }}
         />
         <Table.Column
-          dataIndex={"category"}
+          dataIndex={"categories"}
           title={"Category"}
           render={(value) =>
             categoryIsLoading ? (
@@ -73,16 +76,26 @@ const BlogPostFilteredListIntern = () => {
         />
 
         <Table.Column
-          title={"Stat us"}
+          title={"Status"}
           dataIndex="status"
           sorter={true}
           defaultSortOrder={getDefaultSortOrder("status", sorters)}
+          defaultFilteredValue={getDefaultFilter(
+            "status",
+            filters,
+            "eq",
+          )}
+          filterDropdown={(props) => (
+            <FilterDropdown {...props}>
+              <Input placeholder={"placeholder?"} />
+            </FilterDropdown>
+          )}
         />
 
         <Table.Column
           sorter
           defaultSortOrder={getDefaultSortOrder("created_at", sorters)}
-          dataIndex={["createdAt"]}
+          dataIndex={["created_at"]}
           title={"Created at"}
           render={(value: any) => <DateField value={value} />}
         />

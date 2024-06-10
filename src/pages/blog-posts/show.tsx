@@ -34,8 +34,8 @@ export const BlogPostShow = () => {
       />
       <Title level={5}>{"Status"}</Title>
       <TextField value={record?.status} />
-      <Title level={5}>{"CreatedAt"}</Title>
-      <DateField value={record?.createdAt} />
+      <Title level={5}>{"created_at"}</Title>
+      <DateField value={record?.created_at} />
     </Show>
   );
 };

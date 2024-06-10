@@ -12,13 +12,21 @@ import {
 import { useMany, type BaseRecord, getDefaultFilter } from "@refinedev/core";
 import { Space, Table, Input } from "antd";
 
+import { AntdInferencer } from "@refinedev/inferencer/antd";
+
+export const ContactList = () => {
+    return <AntdInferencer />;
+};
 
 
 export const BlogPostList = () => {
   const { tableProps, sorters, filters } = useTable({
     syncWithLocation: true,
+    meta: {
+      select: "*, categories(id,title)",
+    },
     sorters: {
-      initial: [{ field: "created_at", order: "desc" }],
+      // initial: [{ field: "created_at", order: "desc" }],
     },
     filters: {
       // initial: [{ field: "email", operator: "contains", value: "" }],
@@ -29,7 +37,7 @@ export const BlogPostList = () => {
     resource: "categories",
     ids:
       tableProps?.dataSource
-        ?.map((item) => item?.category?.id)
+        ?.map((item) => item?.categories?.id)
         .filter(Boolean) ?? [],
     queryOptions: {
       enabled: !!tableProps?.dataSource,
@@ -50,7 +58,7 @@ export const BlogPostList = () => {
           }}
         />
         <Table.Column
-          dataIndex={"category"}
+          dataIndex={"categories"}
           title={"Category"}
           render={(value) =>
             categoryIsLoading ? (
@@ -79,7 +87,7 @@ export const BlogPostList = () => {
         />
 
         <Table.Column
-          dataIndex={["createdAt"]}
+          dataIndex={["created_at"]}
           title={"Created at"}
           render={(value: any) => <DateField value={value} />}
         />

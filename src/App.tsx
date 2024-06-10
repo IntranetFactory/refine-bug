@@ -1,8 +1,9 @@
-import { GitHubBanner, Refine } from "@refinedev/core";
+import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
 import {
+  AuthPage,
   ErrorComponent,
   ThemedLayoutV2,
   ThemedSiderV2,
@@ -11,13 +12,15 @@ import {
 import "@refinedev/antd/dist/reset.css";
 
 import routerBindings, {
+  CatchAllNavigate,
   DocumentTitleHandler,
   NavigateToResource,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
-import dataProvider from "@refinedev/simple-rest";
+import { dataProvider, liveProvider } from "@refinedev/supabase";
 import { App as AntdApp } from "antd";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import authProvider from "./authProvider";
 import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
@@ -34,6 +37,7 @@ import {
   CategoryList,
   CategoryShow,
 } from "./pages/categories";
+import { supabaseClient } from "./utility";
 
 function App() {
   return (
@@ -44,9 +48,11 @@ function App() {
           <AntdApp>
             <DevtoolsProvider>
               <Refine
-                dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
-                notificationProvider={useNotificationProvider}
+                dataProvider={dataProvider(supabaseClient)}
+                liveProvider={liveProvider(supabaseClient)}
+                authProvider={authProvider}
                 routerProvider={routerBindings}
+                notificationProvider={useNotificationProvider}
                 resources={[
                   {
                     name: "blog_posts",
@@ -99,12 +105,17 @@ function App() {
                 <Routes>
                   <Route
                     element={
-                      <ThemedLayoutV2
-                        Header={() => <Header sticky />}
-                        Sider={(props) => <ThemedSiderV2 {...props} fixed />}
+                      <Authenticated
+                        key="authenticated-inner"
+                        fallback={<CatchAllNavigate to="/login" />}
                       >
-                        <Outlet />
-                      </ThemedLayoutV2>
+                        <ThemedLayoutV2
+                          Header={Header}
+                          Sider={(props) => <ThemedSiderV2 {...props} fixed />}
+                        >
+                          <Outlet />
+                        </ThemedLayoutV2>
+                      </Authenticated>
                     }
                   >
                     <Route
@@ -127,6 +138,39 @@ function App() {
                       <Route path="show/:id" element={<CategoryShow />} />
                     </Route>
                     <Route path="*" element={<ErrorComponent />} />
+                  </Route>
+                  <Route
+                    element={
+                      <Authenticated
+                        key="authenticated-outer"
+                        fallback={<Outlet />}
+                      >
+                        <NavigateToResource />
+                      </Authenticated>
+                    }
+                  >
+                    <Route
+                      path="/login"
+                      element={
+                        <AuthPage
+                          type="login"
+                          formProps={{
+                            initialValues: {
+                              email: "info@refine.dev",
+                              password: "refine-supabase",
+                            },
+                          }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/register"
+                      element={<AuthPage type="register" />}
+                    />
+                    <Route
+                      path="/forgot-password"
+                      element={<AuthPage type="forgotPassword" />}
+                    />
                   </Route>
                 </Routes>
 
